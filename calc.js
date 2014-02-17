@@ -1,8 +1,10 @@
 var Calc = function(){
 
+	// Find the nearest neighbor
 	function getCloseNeighbor(side, elements, currElement){
 		var neighbors = new Array();
 
+		// Choose neighbors from relevant quarters
 		var neighborQuarterFilter = {
 			'top': function(el){
 				return el.y < currElement.y ? el : null;
@@ -11,10 +13,10 @@ var Calc = function(){
 				return el.x < currElement.x ? el : null;
 			},
 			'right': function(el){
-				return el.x > currElement.x ? el : null
+				return el.x > currElement.x ? el : null;
 			},
 			'bottom': function(el){
-				return el.y > currElement.y ? el : null
+				return el.y > currElement.y ? el : null;
 			}			
 		}
 
@@ -24,11 +26,14 @@ var Calc = function(){
 				neighbors.push(fel);
 		});
 
-		var closeNeighbor = {neighbor: null, distance: 100000};
+		// Find the neighboor by shortest distance between elements
+		var closeNeighbor = {neighbor: null, distance: null};
 		neighbors.forEach(function(n){
 				var distance = getDistance(
 					{ x: currElement.x, y: currElement.y },
 					{ x: n.x, y: n.y });
+
+				closeNeighbor.distance = closeNeighbor.distance == null ? distance : closeNeighbor.distance;
 
 				closeNeighbor = distance <= closeNeighbor.distance ? 
 									{neighbor: n, distance: distance} : 

@@ -3,39 +3,26 @@ var Calc = function(){
 	function getCloseNeighbor(side, elements, currElement){
 		var neighbors = new Array();
 
-		switch(side){
-			case 'top': {
-				elements.forEach(function(el){
-					if(el.y < currElement.y)
-						neighbors.push(el);
-				});
-				break;
-			}
-
-			case 'left': {
-				elements.forEach(function(el){
-					if(el.x < currElement.x)
-						neighbors.push(el);
-				});
-				break;
-			}
-
-			case 'right': {
-				elements.forEach(function(el){
-					if(el.x > currElement.x)
-						neighbors.push(el);
-				});
-				break;
-			}
-
-			case 'bottom': {
-				elements.forEach(function(el){
-					if(el.y > currElement.y)
-						neighbors.push(el);
-				});
-				break;
+		var neighborQuarterFilter = {
+			'top': function(el){
+				return el.y < currElement.y ? el : null;
+			},
+			'left': function(el){
+				return el.x < currElement.x ? el : null;
+			},
+			'right': function(el){
+				return el.x > currElement.x ? el : null
+			},
+			'bottom': function(el){
+				return el.y > currElement.y ? el : null
 			}			
 		}
+
+		elements.forEach(function(el){
+			var fel = neighborQuarterFilter[side](el);
+			if(fel)
+				neighbors.push(fel);
+		});
 
 		var closeNeighbor = {neighbor: null, distance: 100000};
 		neighbors.forEach(function(n){

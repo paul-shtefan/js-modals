@@ -6,49 +6,38 @@ var Events = function(){
 
 	function keyDownHandler(e){
 		var currWindow = store.getCurrWindow();
-		switch(e.keyCode){
-			case 32: {
-				
-				if(!currWindow && store.windows.length > 0){
-					store.windows[0].show();
-				}
-				break;
-			}
 
-			case 37: {
+		var keyCodesMaps = {
+			32: function(){
+				if(!currWindow && store.windows.length > 0){
+						store.windows[0].show();
+					}			
+			},
+			37: function(){
 				if(currWindow)
 					currWindow.changeElementFocus('left');
-				break;
-			}
-
-			case 38: {
+			},
+			38: function(){
 				if(currWindow)
 					currWindow.changeElementFocus('top');
-				break;
-			}
-
-			case 39: {
+			},
+			39: function(){
 				if(currWindow)
 					currWindow.changeElementFocus('right');
-				break;
-			}
-
-			case 40: {
+			},
+			40: function(){
 				if(currWindow)
 					currWindow.changeElementFocus('bottom');
-				break;
-			}
-
-			case 13: {
+			},
+			13: function(){
 				currWindow.selectedElement.click();
-				break;
-			}
-
-			case 27: {
+			},
+			27: function(){
 				currWindow.close();
-				break;
 			}
-		}
+		};
+
+		keyCodesMaps[e.keyCode]();
 
 		drawing.drawScene();
 	}
